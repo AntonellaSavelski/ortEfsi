@@ -21,6 +21,10 @@ Para crear una nueva rama
 
 git checkout -b feat01 main
 
+Para cambiar de rama 
+
+git checkout NOMBRE DE LA RAMA
+
 ## NPM (Información acerca del proyecto)
 Para crear el package.json ejecutamos "npm init"
 
