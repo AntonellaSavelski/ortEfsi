@@ -1,7 +1,18 @@
-# Este es mi primer cambio
+# Datos utiles
+Creo una carpeta en el escritorio
+La arrastro a la consola
 
-## Subtítulos
+git clone https://github.com/AntonellaSavelski/ortEfsi.git
+            Se hacen cambios en el código
+git add .
+git commit -m “descripción del commit”
+git push -u origin main
 
-## Esta es otra linea
+git remote set-url origin https://oauth2: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@github.com/AntonellaSavelski/ortEfsi.git
 
-## Linea en el clon 2
+git push -u origin main
+
+## NPM (Información acerca del proyecto)
+Para crear el package.json ejecutamos "npm init"
+Para instalar un módulo "npm install NOMBRE"
+Para instalar dependencias "npm install"
