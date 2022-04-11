@@ -5,12 +5,16 @@ let arrayFinal = [];
 const data3 = data.concat(data);
 
 for (let i = 0; i < data3.length; i++) {
-    
-    let obj = {
-        orig: data3[i],
-        mod: Math.sqrt(data3[i])
-    };
 
-    arrayFinal.push(obj);
+    const raiz = Math.sqrt(data3[i]);
+
+    if (!isNaN(raiz)){
+        let obj = {
+            orig: data3[i],
+            mod: +raiz.toFixed(2)
+        };
+        arrayFinal.push(obj);
+    }
 }
 console.log(arrayFinal);
+ 

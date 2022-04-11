@@ -6,7 +6,7 @@ const data2 = [];
 for (let i = 0; i < data.length; i++) {
     let element = data[i];
     if (i== 0){
-        element=0;
+        element= 0 - data[i+1];
     }
     else if (i == data.length -1){
         element = data[i] * data[i-1] - 0;
