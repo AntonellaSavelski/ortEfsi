@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const PORT = 3000;
+let arrayCartones = []
+let jugadores = []
 
 const process_data = () => {
 
@@ -20,7 +22,6 @@ app.post("/numero_aleatorio", function (req, res) {
 });
 app.post("/iniciar_juego", function (req, res) {
 	console.log(req.body.cartones);
-    let arrayCartones = []
     for (let i = 0;i<req.body.cartones;i++) {
         let carton = []
         for (let j=0; j<10;j++) {
@@ -38,12 +39,30 @@ app.post("/iniciar_juego", function (req, res) {
 });
 
 app.get("/obtener_carton", function (req, res) {
-    let jugadores = [];
-    jugadores = req.body.jugadores
-    for (let i = 0; i < jugadores.length; i++) {
-        console.log(`Carton ${i+1}:${req.body.jugadores[i]}`)        
+
+    let jugador;
+    jugador = req.body.jugador
+    jugadores.push(jugador);
+
+    res.send("El jugador ya tiene su carton asignado, ingrese otro jugador.");
+    console.log(jugadores);
+});
+
+app.get("/cartones/:nombre?", function (req, res) {
+    const articleName = req.params.nombre;
+
+    if (articleName === undefined) {
+        console.log(arrayCartones)
+        res.send(arrayCartones)
     }
-    res.send("Los jugadores ya tienen sus cartones asignados, comenzemos.");
+    else {
+        for (let i = 0; i < jugadores.length; i++) {
+            if(jugadores[i]=== articleName) {
+                console.log(arrayCartones[i])
+                res.send(arrayCartones[i])
+            }
+        }
+    }
 });
 
 app.listen(PORT, function(err){
