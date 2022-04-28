@@ -101,10 +101,11 @@ app.get("/sacar_numero", function (req, res) {
         }
     }
     if (jugadorGanador != null){
-        res.send("El jugador que ganó es:", jugadorGanador, ". Felicitaciones!");
+        res.send(`El jugador que ganó es: ${jugadorGanador}. Felicitaciones!`);
     }
     else{
-        console.log("La pelota que salió es:", num);
+        console.log(`La pelota que salió es: ${num}`);
+        res.send(`La pelota que salió es: ${num}`);
     }
 });
 
