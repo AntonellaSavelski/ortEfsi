@@ -2,7 +2,10 @@ const express = require("express");
 const app = express();
 const PORT = 3000;
 let arrayCartones = []
+let arrayCartonesCopia=[]
+let cartonCopia;
 let jugadores = []
+let contadorCartones=0;
 
 const process_data = () => {
 
@@ -33,7 +36,10 @@ app.post("/iniciar_juego", function (req, res) {
             } 
             carton[j]= num;
         }
+        contadorCartones=contadorCartones+1;
         arrayCartones.push(carton);
+        cartonCopia = [...carton];
+        arrayCartonesCopia.push(cartonCopia);
     }
 	res.send(arrayCartones);
 });
@@ -67,32 +73,39 @@ app.get("/cartones/:nombre?", function (req, res) {
 
 app.get("/sacar_numero", function (req, res) {
     let cartonGanador;
-    let jugadorGanador;
+    let jugadorGanador = null;
     let num = Math.round(Math.random() * (99- 1) + 1)
 
-    for (let i=0; i<arrayCartones.length;i++) {
+    for (let i=0; i<contadorCartones;i++) {
         let contador = 0;
-        let carton =arrayCartones[i];
+        let carton = arrayCartonesCopia[i];
         for (let a = 0; a < carton.length; a++) {
             let cartonVer = carton[a];
             if (num === cartonVer){
-                carton[a] = -1;
+                cartonCopia[a] = -1;
+            }
+            cartonVer= cartonCopia[a];
+            if(cartonVer === -1){
+                contador = contador +1;
             }
         }
-        for (let j = 0; j < carton.length; j++) {
-            let cartonVer = carton[j];
-            if(cartonVer= -1){
-                contador = contador +1;
-                if (contador = 10){
-                    arrayCartones[i] = cartonGanador;
-                    jugadores[i]= jugadorGanador;
-                    console.log(arrayCartones[i])
-                    break;
-                }
+        if (contador === 10){
+            arrayCartones[i] = cartonGanador;
+            if (jugadores[i]== undefined){
+               jugadorGanador = "Nadie tenía este tablero" 
             }
+            else{
+                jugadorGanador = jugadores[i];
+            }
+            break;
         }
     }
-    res.send("El jugador que ganó es:", jugadorGanador, ". Felicitaciones!");
+    if (jugadorGanador != null){
+        res.send("El jugador que ganó es:", jugadorGanador, ". Felicitaciones!");
+    }
+    else{
+        console.log("La pelota que salió es:", num);
+    }
 });
 
 app.listen(PORT, function(err){
