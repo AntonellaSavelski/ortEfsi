@@ -65,6 +65,36 @@ app.get("/cartones/:nombre?", function (req, res) {
     }
 });
 
+app.get("/sacar_numero", function (req, res) {
+    let cartonGanador;
+    let jugadorGanador;
+    let num = Math.round(Math.random() * (99- 1) + 1)
+
+    for (let i=0; i<arrayCartones.length;i++) {
+        let contador = 0;
+        let carton =arrayCartones[i];
+        for (let a = 0; a < carton.length; a++) {
+            let cartonVer = carton[a];
+            if (num === cartonVer){
+                carton[a] = -1;
+            }
+        }
+        for (let j = 0; j < carton.length; j++) {
+            let cartonVer = carton[j];
+            if(cartonVer= -1){
+                contador = contador +1;
+                if (contador = 10){
+                    arrayCartones[i] = cartonGanador;
+                    jugadores[i]= jugadorGanador;
+                    console.log(arrayCartones[i])
+                    break;
+                }
+            }
+        }
+    }
+    res.send("El jugador que ganó es:", jugadorGanador, ". Felicitaciones!");
+});
+
 app.listen(PORT, function(err){
 	if (err) console.log(err);
 	console.log("Server listening on PORT", PORT);
