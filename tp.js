@@ -6,6 +6,8 @@ let arrayCartonesCopia=[]
 let cartonCopia;
 let jugadores = []
 let contadorCartones=0;
+let vecPelotas = [];
+const CANT_NUMEROS = 10;
 
 const process_data = () => {
 
@@ -16,22 +18,33 @@ const process_data = () => {
     };
 };
 
+const ObtenerBolilla = (vecPelotas)=>{
+    let pelota = Math.floor(Math.random() * (99-1) + 1);
+
+    while (vecPelotas[pelota] >= 1)
+    {
+        pelota = Math.floor(Math.random() * (99-1) + 1);
+    }
+    vecPelotas[pelota] = vecPelotas[pelota] + 1;
+
+    return pelota;
+}
 app.use(express.json());
 	
 app.post("/numero_aleatorio", function (req, res) {
 	console.log(req.body)
     const min = 1;
-	res.send([Math.round(Math.random() * (req.body.num- min) + min)])
+	res.send(`${ObtenerBolilla(vecPelotas)}`);
 });
 app.post("/iniciar_juego", function (req, res) {
 	console.log(req.body.cartones);
     for (let i = 0;i<req.body.cartones;i++) {
         let carton = []
-        for (let j=0; j<10;j++) {
-            let num = Math.round(Math.random() * (99- 1) + 1)
-            for (let a = 0; a < 10; a++) {
+        for (let j=0; j< CANT_NUMEROS;j++) {
+            let num = ObtenerBolilla(vecPelotas)
+            for (let a = 0; a < CANT_NUMEROS; a++) {
                 if (num === carton[a]){
-                    num = Math.round(Math.random() * (99- 1) + 1)
+                    num = ObtenerBolilla(vecPelotas)
                 }
             } 
             carton[j]= num;
@@ -41,11 +54,13 @@ app.post("/iniciar_juego", function (req, res) {
         cartonCopia = [...carton];
         arrayCartonesCopia.push(cartonCopia);
     }
+    for(let i=0; i<100; i++){
+        vecPelotas[i]=0;
+    }
 	res.send(arrayCartones);
 });
 
 app.get("/obtener_carton", function (req, res) {
-
     let jugador;
     jugador = req.body.jugador
     jugadores.push(jugador);
@@ -74,7 +89,7 @@ app.get("/cartones/:nombre?", function (req, res) {
 app.get("/sacar_numero", function (req, res) {
     let cartonGanador;
     let jugadorGanador = null;
-    let num = Math.round(Math.random() * (99- 1) + 1)
+    let num = ObtenerBolilla(vecPelotas);
 
     for (let i=0; i<contadorCartones;i++) {
         let contador = 0;
@@ -89,10 +104,10 @@ app.get("/sacar_numero", function (req, res) {
                 contador = contador +1;
             }
         }
-        if (contador === 10){
+        if (contador === CANT_NUMEROS){
             arrayCartones[i] = cartonGanador;
             if (jugadores[i]== undefined){
-               jugadorGanador = "Nadie tenía este tablero" 
+            jugadorGanador = "Nadie tenía este tablero" 
             }
             else{
                 jugadorGanador = jugadores[i];
@@ -100,11 +115,11 @@ app.get("/sacar_numero", function (req, res) {
             break;
         }
     }
+    console.log(`La pelota que salió es: ${num}`);
     if (jugadorGanador != null){
-        res.send(`El jugador que ganó es: ${jugadorGanador}. Felicitaciones!`);
+        res.send(`La pelota que salió es: ${num} El jugador que ganó es: ${jugadorGanador}. Felicitaciones!`);
     }
     else{
-        console.log(`La pelota que salió es: ${num}`);
         res.send(`La pelota que salió es: ${num}`);
     }
 });
