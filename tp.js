@@ -7,7 +7,8 @@ let cartonCopia;
 let jugadores = []
 let contadorCartones=0;
 let vecPelotas = [];
-const CANT_NUMEROS = 10;
+const CANT_NUMEROS = 15;
+let num = ObtenerBolilla(vecPelotas);
 
 const process_data = () => {
 
@@ -30,18 +31,26 @@ const ObtenerBolilla = (vecPelotas)=>{
     return pelota;
 }
 app.use(express.json());
+
+const ObtenerDecena = () =>{
+    const decena = (num) => num === 100 ? 10 : Math.floor(num/10) +1;
+    return decena;
+}
+const decenaCompleta = () =>{
+
+}
 	
 app.post("/numero_aleatorio", function (req, res) {
 	console.log(req.body)
     const min = 1;
-	res.send(`${ObtenerBolilla(vecPelotas)}`);
+	res.send(`${num}`);
 });
 app.post("/iniciar_juego", function (req, res) {
 	console.log(req.body.cartones);
     for (let i = 0;i<req.body.cartones;i++) {
         let carton = []
         for (let j=0; j< CANT_NUMEROS;j++) {
-            let num = ObtenerBolilla(vecPelotas)
+
             for (let a = 0; a < CANT_NUMEROS; a++) {
                 if (num === carton[a]){
                     num = ObtenerBolilla(vecPelotas)
@@ -89,7 +98,6 @@ app.get("/cartones/:nombre?", function (req, res) {
 app.get("/sacar_numero", function (req, res) {
     let cartonGanador;
     let jugadorGanador = null;
-    let num = ObtenerBolilla(vecPelotas);
 
     for (let i=0; i<contadorCartones;i++) {
         let contador = 0;
